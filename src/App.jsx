@@ -3,6 +3,7 @@ import NewProject from "./components/NewProject.jsx";
 import NoProjectSelected from "./components/NoProjectSelected.jsx";
 import SelectedProject from "./components/SelectedProject.jsx";
 import { useState } from "react";
+import {v4 as uuidv4} from 'uuid';
 
 // This is the main App component that renders the sidebar and the content area.
 // It uses a state variable to determine if a new project is being created.
@@ -18,7 +19,7 @@ function App() {
       const newTask = {
         text: text,
         projectId: prevState.selectedProjectId,
-        id: Math.random(),
+        id: uuidv4(),
       };
       return {
         ...prevState,
@@ -53,6 +54,8 @@ function App() {
       projects: prevState.projects.filter(
         (project) => project.id !== prevState.selectedProjectId
       ),
+      tasks: prevState.tasks.filter((task) => task.projectId !== prevState.selectedProjectId
+      ),
     }));
   }
 
@@ -66,7 +69,7 @@ function App() {
   function handleAddProject(projectData) {
     setProjectsState((prevState) => {
       const newProject = {
-        id: Math.random(),
+        id: uuidv4(),
         ...projectData,
       };
       return {
@@ -77,6 +80,8 @@ function App() {
     });
   }
   console.log(projectsState.projects);
+  console.log(projectsState.tasks);
+  // Determine which content to display based on the selected project ID
 
   const selectedProject = projectsState.projects.find(
     (project) => project.id === projectsState.selectedProjectId
